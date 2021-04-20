@@ -1,0 +1,6 @@
+[submodule "externals/littleproxy-mitm"]
+	path = externals/littleproxy-mitm
+	url = git@github.com-koh-osug:koh-osug/LittleProxy-mitm.git
+[submodule "externals/nitmproxy"]
+	path = externals/nitmproxy
+	url = git@github.com-koh-osug:koh-osug/nitmproxy.git
