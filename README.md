@@ -6,7 +6,7 @@ This is an Android test app for [nitmproxy](https://github.com/chhsiao90/nitmpro
 
 The MITM CA must be installed. Since Android 7 no application is trusting user defined CAs anymore by default. The Google Chrome browser does.
 
-Install the certificate `app/src/main/assets/server.pem` as user certificate in Android. Security -> Encryption & credentials -> Install a certificate / Install from SD card 
+Install the certificate `app/src/main/res/raw/server.pem` as user certificate in Android. Security -> Encryption & credentials -> Install a certificate / Install from SD card 
 
 # CA Certificate
 
