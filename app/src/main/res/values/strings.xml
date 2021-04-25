@@ -17,9 +17,9 @@
   -->
 
 <resources>
-    <string name="app_name">nitmproxy Demo App</string>
-    <string name="heading">nitmproxy Demo App</string>
-    <string name="description">Demonstrating a MITM proxy.</string>
+    <string name="app_name">Netty in the Middle Demo App</string>
+    <string name="heading">Netty in the Middle Demo App</string>
+    <string name="description">Demonstrating a MITM proxy using the Netty in the Middle library.</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="exception">Exception</string>
     <string name="success">Success</string>

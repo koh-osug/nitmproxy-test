@@ -24,11 +24,11 @@ import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.chhsiaoninety.nitmproxy.NitmProxy;
-import com.github.chhsiaoninety.nitmproxy.NitmProxyConfig;
-import com.github.chhsiaoninety.nitmproxy.enums.ProxyMode;
+import com.github.chhsiao90.nitmproxy.NitmProxy;
+import com.github.chhsiao90.nitmproxy.NitmProxyConfig;
+import com.github.chhsiao90.nitmproxy.enums.ProxyMode;
 
-import org.bouncycastle.util.encoders.Hex;
+import org.conscrypt.Conscrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -36,8 +36,6 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-
-import javax.security.auth.callback.PasswordCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,23 +88,16 @@ public class MainActivity extends AppCompatActivity {
     public void runProxy(View view) {
         new Thread(() -> {
             try {
-//                Security.insertProviderAt(new BouncyCastleJsseProvider(), 1);
-//                Security.addProvider(new BouncyCastleProvider());
-//                Security.addProvider(new SecureRandomProvider());
                 NitmProxyConfig config = new NitmProxyConfig();
+                config.setSslProvider(Conscrypt.newProvider());
                 config.setProxyMode(ProxyMode.SOCKS);
                 config.setHost("127.0.0.1");
                 config.setPort(9090);
-                Files.copy(getAssets().open("server.pem"), new File(getFilesDir(), "server.pem").toPath(), StandardCopyOption.REPLACE_EXISTING);
-                Files.copy(getAssets().open("key.pem"), new File(getFilesDir(), "key.pem").toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(getResources().openRawResource(R.raw.server), new File(getFilesDir(), "server.pem").toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(getResources().openRawResource(R.raw.key), new File(getFilesDir(), "key.pem").toPath(), StandardCopyOption.REPLACE_EXISTING);
                 config.setCertFile(new File(getFilesDir(), "server.pem").getAbsolutePath());
                 config.setKeyFile(new File(getFilesDir(), "key.pem").getAbsolutePath());
                 config.setInsecure(true);
-                config.setRequestLogger((b) -> LOGGER.error("Request:  --> {}", Hex.toHexString(b)));
-                config.setResponseLogger((b) -> LOGGER.error("Response: <-- {}", Hex.toHexString(b)));
-
-                PasswordCallback passwordCallback = new PasswordCallback("Password", false);
-                passwordCallback.setPassword("123456".toCharArray());
                 server = new NitmProxy(config);
                 server.start();
             } catch (Exception e) {
@@ -126,22 +117,15 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void stopServer() { //throws PivException {
+    private void stopServer() {
         if (server != null) {
             server.stop();
         }
-//        if (piv != null) {
-//            piv.close();
-//        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        try {
         stopServer();
-//        } catch (PivException e) {
-//            LOGGER.warn("Could not stop proxy", e);
-//        }
     }
 }

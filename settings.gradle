@@ -17,6 +17,5 @@
  */
 
 include ':app'
-include ':externals:nitmproxy'
 
 rootProject.name = "nitmproxy Test"
